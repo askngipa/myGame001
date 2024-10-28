@@ -4,16 +4,22 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    public float Speed;
+    public float speed;
+    public float health;
+    public float maxHealth;
+    public RuntimeAnimatorController[] animCon;
     public Rigidbody2D target;
 
-    bool isLive = true;
+    bool isLive;
+
     Rigidbody2D rig;
+    Animator anim;
     SpriteRenderer spriter;
 
     private void Awake()
     {
         rig = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
         spriter = GetComponent<SpriteRenderer>();
     }
 
@@ -24,7 +30,7 @@ public class Enemy : MonoBehaviour
 
         //위치차이 = 타겟위치 - 나의위치
         Vector2 dirVec = target.position - rig.position;
-        Vector2 nextVec = dirVec.normalized * Speed * Time.deltaTime;
+        Vector2 nextVec = dirVec.normalized * speed * Time.deltaTime;
 
         //플레이어의 키입력 값을 더한 이동 = 몬스터의 방향값을 더한 이동
         rig.MovePosition(rig.position + nextVec);
@@ -43,5 +49,16 @@ public class Enemy : MonoBehaviour
     private void OnEnable()
     {
         target = GameManager.instance.player.GetComponent<Rigidbody2D>();
+        isLive = true; //생존여부와 체력 초기화
+        health = maxHealth; //초기화
+    }
+
+    //초기 속성을 적용하는 함수 추가
+    public void Init(SpawnData data)
+    {
+        anim.runtimeAnimatorController = animCon[data.spriteType];
+        speed = data.speed;
+        maxHealth = data.health;
+        health = data.health;
     }
 }

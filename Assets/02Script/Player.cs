@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,7 +8,7 @@ public class Player : MonoBehaviour
     Rigidbody2D rig;
     SpriteRenderer spriter;
     Animator anim;
-
+    
     private void Awake()
     {
         rig=GetComponent<Rigidbody2D>();
